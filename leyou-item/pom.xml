@@ -17,5 +17,15 @@
     <module>leyou-item-service</module>
 </modules>
 <packaging>pom</packaging>
-
+<dependencies>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+</dependencies>
 </project>
