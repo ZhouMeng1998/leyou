@@ -9,6 +9,9 @@ import javax.persistence.Table;
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue 用于标注主键的生成策略，通过strategy 属性指定。
+    // 默认情况下，JPA 自动选择一个最适合底层数据库的主键生成策略：
+    // SqlServer对应identity，MySQL 对应 auto increment。
     private Long id;
     private String name;// 品牌名称
     private String image;// 品牌图片
