@@ -18,21 +18,6 @@ public class BrandService {
     @Autowired
     private BrandMapper mapper;
 
-//    public PageResult<Brand> queryBrandsByPages(String key, Integer page, Integer rows, String sortBy, boolean desc) {
-//        Example example = new Example(Brand.class);
-//        Example.Criteria criteria = example.createCriteria();
-//        if (StringUtils.isNotBlank(key)) {
-//            criteria.andLike("name", "%" + key + "%").orEqualTo("letter", key);
-//        }
-//        if (StringUtils.isNotBlank(sortBy)) {
-//            example.setOrderByClause(sortBy + " " + (desc == true ? "desc" : "asc"));//id desc
-//        }
-//        PageHelper.startPage(page, rows);
-//        List<Brand> brands = this.mapper.selectByExample(example);
-//        PageInfo<Brand> pageInfo = new PageInfo<Brand>(brands);
-//        return new PageResult<Brand>(pageInfo.getTotal(), pageInfo.getList());
-//    }
-
     public PageResult<Brand> queryBrandsByPages(String key, Integer page, Integer rows, String sortBy, Boolean desc) {
 
         // 初始化example对象
@@ -44,20 +29,23 @@ public class BrandService {
             criteria.andLike("name", "%" + key + "%").orEqualTo("letter", key);
         }
 
-        // 添加分页条件
-        PageHelper.startPage(page, rows);
 
         // 添加排序条件
         if (StringUtils.isNotBlank(sortBy)) {
             example.setOrderByClause(sortBy + " " + (desc ? "desc" : "asc"));
         }
-
+        // 添加分页条件
+        PageHelper.startPage(page, rows);
         List<Brand> brands = this.mapper.selectByExample(example);
+
         // 包装成pageInfo
         PageInfo<Brand> pageInfo = new PageInfo<>(brands);
         // 包装成分页结果集返回
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
     }
+
+
+
     @Transactional
     public void saveBrand(Brand brand, List<Long> cids) {
         this.mapper.insertSelective(brand);

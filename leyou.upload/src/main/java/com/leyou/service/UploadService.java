@@ -32,7 +32,7 @@ public class UploadService {
                 return null;
             }
             file.transferTo(new File("D:\\Programming\\Courses\\JAVA\\leyou\\images\\" + originalFilename));
-            return "http://image/leyou.com/" + originalFilename;
+            return "http://image.leyou.com/" + originalFilename;
         } catch (IOException e) {
             LOGGER.info("服务器内部出错, {}", originalFilename);
             e.printStackTrace();
