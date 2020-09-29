@@ -53,6 +53,20 @@ public class BrandService {
             this.mapper.saveBrandAndCategory(brand.getId(), cid);
         });
     }
+
+    public Brand selectBrandById(Long id) {
+        Brand brand = new Brand();
+        brand.setId(id);
+        List<Brand> brands = mapper.selectByExample(brand);
+        return brands.get(0);
+    }
+
+    public void deleteBrand(Long bid) {
+        Brand brand = new Brand();
+        brand.setId(bid);
+        mapper.delete(brand);
+        mapper.deleteMidTable_tb_category_brand(bid);
+    }
 }
 
 

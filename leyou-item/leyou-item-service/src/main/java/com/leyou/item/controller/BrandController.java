@@ -38,4 +38,21 @@ public class BrandController {
         this.brandService.saveBrand(brand, cids);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @GetMapping("delete/{bid}")
+    public ResponseEntity<Void> deleteBrand(@PathVariable("bid") Long bid){
+        this.brandService.deleteBrand(bid);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
+    @PutMapping
+    public ResponseEntity<Void> changeBrand(Brand newBrand, @RequestParam("cids") List<Long> cids) {
+        //先把老的brand删掉
+        this.brandService.deleteBrand(newBrand.getId());
+        //然后用saveBrand方法插入新的brand
+        this.brandService.saveBrand(newBrand, cids);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 }

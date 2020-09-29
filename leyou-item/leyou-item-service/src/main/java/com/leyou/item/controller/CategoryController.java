@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,6 +35,15 @@ public class CategoryController {
         List<Category> categories = categoryService.queryCategoriesByPid(pid);
         if (CollectionUtils.isEmpty(categories)) {
             return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("bid/{bid}")
+    public ResponseEntity<List<Category>> queryCategoriesByBid(@PathVariable("bid")Long bid){
+        List<Category> categories = categoryService.queryCategoriesByBid(bid);
+        if(categories == null || categories.size() < 1) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(categories);
     }

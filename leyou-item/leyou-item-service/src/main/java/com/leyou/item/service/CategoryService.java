@@ -23,4 +23,8 @@ public class CategoryService {
         List<Category> categories = this.categoryMapper.select(record);
         return categories;
     }
+
+    public List<Category> queryCategoriesByBid(Long bid) {
+        return categoryMapper.queryByBrandId(bid);
+    }
 }
