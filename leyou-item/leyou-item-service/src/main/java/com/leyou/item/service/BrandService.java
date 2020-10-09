@@ -67,6 +67,10 @@ public class BrandService {
         mapper.delete(brand);
         mapper.deleteMidTable_tb_category_brand(bid);
     }
+
+    public List<Brand> queryBrandsByCid(Long cid) {
+        return this.mapper.selectBrandsByCid(cid);
+    }
 }
 
 

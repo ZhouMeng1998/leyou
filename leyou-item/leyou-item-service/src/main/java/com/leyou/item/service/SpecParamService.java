@@ -12,9 +12,12 @@ public class SpecParamService {
     @Autowired
     private SpecParamMapper paramMapper;
 
-    public List<SpecParam> queryParamsByGid(Long gid) {
+    public List<SpecParam> querySpecParamByParams(Long gid, Long cid, Boolean generic, Boolean searching) {
         SpecParam param = new SpecParam();
         param.setGroupId(gid);
+        param.setCid(cid);
+        param.setGeneric(generic);
+        param.setSearching(searching);
         return paramMapper.select(param);
     }
 

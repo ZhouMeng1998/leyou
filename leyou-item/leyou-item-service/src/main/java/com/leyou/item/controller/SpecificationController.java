@@ -36,8 +36,12 @@ public class SpecificationController {
     }
 
     @GetMapping("params")
-    public ResponseEntity<List<SpecParam>> queryParamsByGid(@RequestParam("gid") Long gid) {
-        List<SpecParam> params = paramService.queryParamsByGid(gid);
+    public ResponseEntity<List<SpecParam>> querySpecParamByParams(
+            @RequestParam(value = "gid", required = false) Long gid,
+            @RequestParam(value = "cid", required = false) Long cid,
+            @RequestParam(value = "generic", required = false) Boolean generic,
+            @RequestParam(value = "specification", required = false) Boolean searching) {
+        List<SpecParam> params = paramService.querySpecParamByParams(gid, cid, generic, searching);
         if (params == null || params.size() <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
