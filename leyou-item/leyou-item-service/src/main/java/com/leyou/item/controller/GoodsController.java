@@ -4,10 +4,10 @@ import com.leyou.common.pojo.PageResult;
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
@@ -30,5 +30,11 @@ public class GoodsController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(results);
+    }
+
+    @PostMapping("/goods")
+    public ResponseEntity<Void> saveGoods(@RequestBody SpuBo spuBo){
+        this.goodsService.saveGoods(spuBo);
+        return ResponseEntity.ok().build();
     }
 }

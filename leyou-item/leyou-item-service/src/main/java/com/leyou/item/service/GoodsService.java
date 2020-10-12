@@ -5,20 +5,20 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.bo.SpuBo;
-import com.leyou.item.mapper.BrandMapper;
-import com.leyou.item.mapper.GoodsMapper;
-import com.leyou.item.pojo.Brand;
-import com.leyou.item.pojo.Spu;
+import com.leyou.item.mapper.*;
+import com.leyou.item.pojo.*;
 import com.netflix.discovery.converters.Auto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,6 +30,15 @@ public class GoodsService {
     private BrandMapper brandMapper;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private SpuMapper spuMapper;
+    @Autowired
+    private SpuDetailMapper spuDetailMapper;
+    @Autowired
+    private SkuMapper skuMapper;
+    @Autowired
+    private StockMapper stockMapper;
+
 
     public PageResult<SpuBo> querySpuBoByPage(String key, Boolean saleable, Integer page, Integer rows) {
         Example example = new Example(Spu.class);
@@ -58,5 +67,30 @@ public class GoodsService {
             spuBos.add(spuBo);
         });
         return new PageResult<SpuBo>(pageInfo.getTotal(), spuBos);
+    }
+    @Transactional
+    public void saveGoods(SpuBo spuBo) {
+        spuBo.setId(null);
+        spuBo.setValid(true);
+        spuBo.setSaleable(true);
+        spuBo.setCreateTime(new Date());
+        spuBo.setLastUpdateTime(spuBo.getCreateTime());
+        this.spuMapper.insertSelective(spuBo);
+        SpuDetail spuDetail = spuBo.getSpuDetail();
+        spuDetail.setSpuId(spuBo.getId());
+        this.spuDetailMapper.insertSelective(spuDetail);
+        this.saveSkuAndStock(spuBo);
+    }
+    private void saveSkuAndStock(SpuBo spuBo){
+        spuBo.getSkus().forEach(sku -> {
+            sku.setSpuId(spuBo.getId());
+            sku.setCreateTime(new Date());
+            sku.setLastUpdateTime(sku.getCreateTime());
+            this.skuMapper.insertSelective(sku);
+            Stock stock = new Stock();
+            stock.setSkuId(sku.getId());
+            stock.setStock(sku.getStock());
+            this.stockMapper.insertSelective(stock);
+        });
     }
 }
