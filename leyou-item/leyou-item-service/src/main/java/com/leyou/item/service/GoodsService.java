@@ -93,4 +93,22 @@ public class GoodsService {
             this.stockMapper.insertSelective(stock);
         });
     }
+
+
+    public SpuDetail querySpuDetailBySpuId(Long id) {
+        return this.spuDetailMapper.selectByPrimaryKey(id);
+    }
+
+    public List<Sku> querySkuBySpuId(Long id) {
+        Example example = new Example(Sku.class);
+        example.createCriteria().andEqualTo("spuId",id);
+        List<Sku> skuList = this.skuMapper.selectByExample(example);
+        for (Sku sku : skuList){
+            Example temp = new Example(Stock.class);
+            temp.createCriteria().andEqualTo("skuId", sku.getId());
+            Stock stock = this.stockMapper.selectByExample(temp).get(0);
+            sku.setStock(stock.getStock());
+        }
+        return skuList;
+    }
 }

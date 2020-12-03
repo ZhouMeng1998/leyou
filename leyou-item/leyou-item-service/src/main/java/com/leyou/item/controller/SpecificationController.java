@@ -49,13 +49,13 @@ public class SpecificationController {
     }
 
     @PostMapping("param")
-    private ResponseEntity<Void> addParam(SpecParam param) {
+    public ResponseEntity<Void> addParam(SpecParam param) {
         paramService.addParam(param);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("param")
-    private ResponseEntity<Void> editParam(SpecParam param) {
+    public ResponseEntity<Void> editParam(SpecParam param) {
         try {
             paramService.editParam(param);
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class SpecificationController {
     }
 
     @DeleteMapping("param/{id}")
-    private ResponseEntity<Void> deleteParamById(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteParamById(@PathVariable("id") Long id) {
         paramService.deleteParam(id);
         return ResponseEntity.ok().build();
     }

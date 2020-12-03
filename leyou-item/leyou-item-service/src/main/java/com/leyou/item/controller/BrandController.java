@@ -4,6 +4,7 @@ import com.leyou.common.pojo.PageResult;
 import com.leyou.item.pojo.Brand;
 import com.leyou.item.service.BrandService;
 import com.netflix.discovery.converters.Auto;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +64,14 @@ public class BrandController {
         }
         else
             return ResponseEntity.ok(brands);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Brand> queryBrandById(@PathVariable("id")Long id) {
+        Brand brand = this.brandService.queryBrandById(id);
+        if (brand == null) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(brand);
     }
 }

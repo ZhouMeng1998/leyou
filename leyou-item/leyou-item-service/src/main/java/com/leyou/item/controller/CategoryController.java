@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,4 +48,15 @@ public class CategoryController {
         }
         return ResponseEntity.ok(categories);
     }
+
+    @GetMapping("names")
+    public ResponseEntity<List<String>> queryNamesById(@RequestParam("ids")List<Long> ids) {
+        List<String> names = this.categoryService.queryByIdList(ids);
+        if (CollectionUtils.isEmpty(names)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(names);
+    }
+
+
 }
